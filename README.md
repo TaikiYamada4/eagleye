@@ -12,6 +12,10 @@ Eagleye is an open-source software for vehicle localization utilizing GNSS and I
 
 ![Flowchart of Eagleye](docs/flowchart.png)
 
+## Architecture
+
+![Architecture of Eagleye](docs/eagleye_architecture.drawio.svg)
+
 ## Recommended Sensors
 **GNSS receiver**
 * [Septentrio Mosaic development kit with GNSS antenna](https://shop.septentrio.com/en/shop/mosaic-x5-devkit) 
@@ -75,6 +79,16 @@ ie)
 Access mosaic's web ui and upload the following file in Admin/Configuration.
 
 https://www.dropbox.com/s/uckt9
+
+### IMU
+
+1. IMU settings.
+
+* Output rate 50Hz
+
+2. Please be careful with the coordinate system when using the [tamagawa ros driver](https://github.com/MapIV/tamagawa_imu_driver) created by MAP IV. If the x-direction indicated on the IMU is set to the vehicle's direction and the y-direction to the right side of the vehicle, please set the `roll` in the `eagleye/eagleye_util/tf/config/sensors_tf.yaml file` to `3.14159`.
+
+		 roll: 3.14159
 
 ### Eagleye parameters
 
@@ -157,7 +171,8 @@ To visualize the eagleye output location /eagleye/fix, for example, use the foll
 
 To convert from eagleye/fix to eagleye/pose, use the following command　
 
-	ros2 launch eagleye_fix2pose fix2pose.xml
+	ros2 launch eagleye_geo_pose_fusion geo_pose_fusion.launch.xml
+	ros2 launch eagleye_geo_pose_converter geo_pose_converter.launch.xml
 
 ## Sample data
 ### ROSBAG(ROS1)

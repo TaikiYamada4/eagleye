@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(eagleye_gnss_converter)
+project(eagleye_geo_pose_converter)
 
 # Default to C99
 if(NOT CMAKE_C_STANDARD)
@@ -15,18 +15,13 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
-if($ENV{ROS_DISTRO} STREQUAL "galactic")
-  add_definitions(-DROS_DISTRO_GALACTIC)
-endif()
-
 find_package(ament_cmake_auto REQUIRED)
 ament_auto_find_build_dependencies()
 
 include_directories(include)
 
-ament_auto_add_executable(gnss_converter
-  src/nmea2fix_core.cpp
-  src/gnss_converter_node.cpp
+ament_auto_add_executable(geo_pose_converter
+  src/geo_pose_converter.cpp
 )
 
 install(TARGETS
@@ -43,4 +38,3 @@ if(BUILD_TESTING)
 endif()
 
 ament_auto_package()
-
