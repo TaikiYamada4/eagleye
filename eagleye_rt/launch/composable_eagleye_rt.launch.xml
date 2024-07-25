@@ -10,17 +10,17 @@
   <arg name="use_multi_antenna_mode" default="false"/>
 
   <group>
-    <push-ros-namespace namespace="eagleye"/>
+    <push-ros-namespace namespace="/localization/pose_estimator/eagleye"/>
 
     <arg name="use_rtk_dead_reckoning" default="false"/>
     <arg name="use_rtk_heading" default="false"/>
 
-    <group if="$(var use_eagleye_twist)">
+    <group if="$(eval &quot;'$(var use_eagleye_twist)'=='true'&quot;)">
       <node pkg="topic_tools" exec="relay" name="eagleye_output_twist_relay" args="twist_with_covariance $(var output_twist_with_cov_name)"/>
     </group>
 
     <node_container pkg="rclcpp_components" exec="component_container" name="eagleye_container1" namespace="">
-      <composable_node pkg="glog_component" plugin="GlogComponent" name="glog_component" namespace=""/>
+      <composable_node pkg="glog_component" plugin="GlogComponent" name="glog_component1" namespace=""/>
       <composable_node pkg="eagleye_rt" name="twist_relay" plugin="TwistRelay">
         <param from="$(var eagleye_param_path)"/>
         <param name="yaml_file" value="$(var eagleye_param_path)"/>
@@ -65,7 +65,7 @@
     </node_container>
 
     <node_container pkg="rclcpp_components" exec="component_container" name="eagleye_container2" namespace="">
-      <composable_node pkg="glog_component" plugin="GlogComponent" name="glog_component" namespace=""/>
+      <composable_node pkg="glog_component" plugin="GlogComponent" name="glog_component2" namespace=""/>
       <composable_node pkg="eagleye_rt" name="distance_node" plugin="Distance">
         <param from="$(var eagleye_param_path)"/>
         <param name="yaml_file" value="$(var eagleye_param_path)"/>
@@ -105,7 +105,7 @@
     </node_container>
 
       <node_container pkg="rclcpp_components" exec="component_container" name="eagleye_container3" namespace="">
-        <composable_node pkg="glog_component" plugin="GlogComponent" name="glog_component" namespace=""/>
+        <composable_node pkg="glog_component" plugin="GlogComponent" name="glog_component3" namespace=""/>
 
         <composable_node pkg="eagleye_rt" name="heading_node_1st" plugin="Heading" if="$(eval &quot;'$(var use_rtk_heading)'=='false'&quot;)">
           <param from="$(var eagleye_param_path)"/>
